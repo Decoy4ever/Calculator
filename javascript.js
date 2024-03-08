@@ -1,22 +1,42 @@
-let add = (a,b) => a + b;
+// create a getDigit() that will handle user input for number buttons
+// use event listener so when user clicks on the btn it prints the output value
+// user clicks on a button that is a number the value will be stored into a new variable number array that will be set empty
+// user clicks on a button that is a number the value will then be stored into the variable number array
+// use the operate function to call that will listen if the user presses any of the operators
+// print out the result
 
+const btns = document.querySelectorAll("button");
+// const display = document.querySelector(".display");
+const sumArr = [];
 
-let subtract = (a,b) => a - b;
+const getBtnValue = (num) => {
+    // get the button value
+    num = num.target.textContent;
 
-let multiply = (a,b) => a*b;
+    // join the num into the sumArr
+    sumArr.push(num);
+    // console.log("The sum arr is: " + sumArr);
 
+    const joinArr = sumArr.join("");
+    console.log("joined Arr is: " + joinArr);
 
-let divide = (a,b) => a/b;
-
-
-let operate = (a,b) => {
-    a = 5;
-    b = 10;
-    console.log(add(a,b));
-    console.log(subtract(a,b));
-    console.log(multiply(a,b));
-    console.log(divide(a,b));
+    return joinArr;
 }
 
-operate();
+const getBtnOutput = () => {
+    btns.forEach((button) => {
+        button.addEventListener("click", getBtnValue)
+    })
+}
+
+getBtnOutput();
+
+
+
+
+
+
+
+
+
 
