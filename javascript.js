@@ -1,35 +1,56 @@
-// create a getDigit() that will handle user input for number buttons
-// use event listener so when user clicks on the btn it prints the output value
-// user clicks on a button that is a number the value will be stored into a new variable number array that will be set empty
-// user clicks on a button that is a number the value will then be stored into the variable number array
-// use the operate function to call that will listen if the user presses any of the operators
-// print out the result
+const additionButton = document.querySelector('.add')
+const subtractButton = document.querySelector('.sub')
+const multiplicationButton = document.querySelector('.mult')
+const divideButton = document.querySelector('.divide')
+const equalButton = document.querySelector('.equal')
+const displayDiv = document.querySelector('.display')
 
-const btns = document.querySelectorAll("button");
-// const display = document.querySelector(".display");
-const sumArr = [];
+// Store the numbers and operators in an empty array
+let firstNum = []
+let secondNum = []
+let operator = []
 
-const getBtnValue = (num) => {
-    // get the button value
-    num = num.target.textContent;
-
-    // join the num into the sumArr
-    sumArr.push(num);
-    // console.log("The sum arr is: " + sumArr);
-
-    const joinArr = sumArr.join("");
-    console.log("joined Arr is: " + joinArr);
-
-    return joinArr;
+function add(num1,num2)
+{
+    console.log(num1 + num2)
 }
 
-const getBtnOutput = () => {
-    btns.forEach((button) => {
-        button.addEventListener("click", getBtnValue)
-    })
+function subtract(num1,num2)
+{
+    console.log(num1 - num2)
+}
+function multiply(num1,num2)
+{
+    console.log(num1 * num2)
 }
 
-getBtnOutput();
+function divide(num1,num2)
+{
+    console.log(num1 / num2)
+}
+
+const btn = document.querySelector('.container-item')
+
+function displayOperations()
+{
+    btn.addEventListener('click',(e) =>
+    {
+        console.log(e.target.textContent)
+        // change the text content of the display
+        displayDiv.textContent = e.target.textContent
+    }) 
+}
+
+displayOperations()
+
+
+
+
+
+
+
+
+
 
 
 
