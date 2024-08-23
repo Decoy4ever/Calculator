@@ -47,7 +47,7 @@ function operate(num1,num2,op)
     {
          return divide(num1,num2)
     }
-    else if(op === '*')
+    else if(op === 'x')
     {
         return multiply(num1,num2)
     }
@@ -59,8 +59,7 @@ function operate(num1,num2,op)
 
 const display = document.querySelector('.display')
 const buttons = document.querySelectorAll('button')
-const clearButton = document.querySelector('.clear')
-let reset = ""
+let sum = ""
 
 function getNumpad()
 {
@@ -71,28 +70,7 @@ function getNumpad()
         {
             if(btn.className === 'number')
             {
-                if(operator === "")
-                {
-                    // display the current click event
-                    display.textContent = e.target.textContent
-
-                    // update the display to show the current click event to handle multiple clicked events
-                    firstNumber = firstNumber + display.textContent
-
-                    // update the display
-                    display.textContent = firstNumber
-                }
-                else if(operator !== "")
-                {
-                       // display the current click event
-                       display.textContent = e.target.textContent
-
-                       // update the display to show the current click event to handle multiple clicked events
-                       secondNumber = secondNumber + display.textContent
-   
-                       // update the display
-                       display.textContent = secondNumber
-                }
+                getNumberButton(e)
             }
        
             console.log('first number: ' + firstNumber)
@@ -100,54 +78,84 @@ function getNumpad()
 
             if(btn.className === 'operator')
             {
-                if(btn.textContent === '+')
+                if(btn.textContent === '+' || btn.textContent === '-' || btn.textContent === 'x' || btn.textContent === '/')
                 {
-                    display.textContent = e.target.textContent
-
-                    operator = display.textContent
-                }
-                else if(btn.textContent === '-')
-                {
-                    display.textContent = e.target.textContent
-
-                    operator = display.textContent
-                }
-                else if(btn.textContent === '*')
-                {
-                    display.textContent = e.target.textContent
-
-                    operator = display.textContent
-                }
-                else if(btn.textContent === '/')
-                {
-                    display.textContent = e.target.textContent
-
-                    operator = display.textContent
+                   getOperatorButton(e)
                 }
             }
             console.log('operator: ' + operator)
 
             if(btn.className === 'equal')
             {
-                // display the '=' sign
-                display.textContent = e.target.textContent
-                
-                // display the result of the operator
-                operator = operate(firstNumber,secondNumber,operator)
-                console.log(operator)
-
-                display.textContent = operator
+                if(sum === "")
+                {
+                    // display the '=' sign
+                    display.textContent = e.target.textContent
+                    
+                    display.textContent = firstNumber + operator + secondNumber
+                    // display the result of the operator
+                    sum = operate(firstNumber,secondNumber,operator)
+                    console.log('Sum: ' + sum)
+    
+                    display.textContent = sum
+                    firstNumber = sum 
+                    sum = ""
+                    secondNumber = ""
+                    operator = ""
+                }
             }
+        })
 
+        btn.addEventListener('click',(e) =>
+        {
             if(btn.className === 'clear')
             {
-                display.textContent = ""
+                display.textContent = e.target.textContent
+                display.textContent = "0"
                 firstNumber = ""
                 secondNumber = ""
-                op = ""
+                operator = ""
+                sum = ""
             }
         })
     })
+}
+
+function getNumberButton(number)
+{
+    if(operator === "" && secondNumber === "" && sum === "")
+    {
+        // display the targeted click event
+        display.textContent = number.target.textContent
+
+        // update the display to show the current click event to handle multiple clicked events
+        firstNumber = firstNumber + display.textContent
+
+        // update the display
+        display.textContent = firstNumber
+    }
+    else if(operator !== "" && firstNumber !== "" && sum === "")
+    {
+        display.textContent = number.target.textContent
+        secondNumber = secondNumber + display.textContent
+
+        // update the display to include firstNumber and secondNumber
+        display.textContent = firstNumber + operator + secondNumber
+    }
+    else if(firstNumber !== "" && secondNumber === "" && sum === "")
+    {
+        firstNumber = sum
+        secondNumber = ""
+        firstNumber = firstNumber + display.textContent
+        console.log('operation is now ' + firstNumber)
+    }
+}
+
+function getOperatorButton(op)
+{
+    display.textContent = op.target.textContent
+    operator = display.textContent
+    display.textContent = firstNumber + operator
 }
 
 const number = getNumpad()
