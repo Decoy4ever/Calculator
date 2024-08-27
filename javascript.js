@@ -75,7 +75,6 @@ function getNumpad()
     buttons.forEach((btn) => 
     {
         // handle click number button event
-        firstNumber = 0
         btn.addEventListener('click',(e) =>
         {
             if(btn.className === 'number')
@@ -117,29 +116,22 @@ function getNumpad()
 function getNumberButton(number)
 {
     display.textContent = number.target.textContent
-    if(firstNumber === "" && secondNumber === "" && operator === "" && sum === "" )
+    if(secondNumber === "" && operator === "" )
     {
         // display the targeted click event
 
         // update the display to show the current click event to handle multiple clicked events
-        firstNumber = display.textContent
+        firstNumber = firstNumber + display.textContent
 
         // update the display
         display.textContent = firstNumber
     }
-    else if(firstNumber !== "" && secondNumber === "" && operator !== ""  && sum === "" )
+    else if(firstNumber !== "" && operator !== "" )
     {
         secondNumber = secondNumber + display.textContent
 
         // update the display to include firstNumber and secondNumber
         display.textContent = firstNumber + operator + secondNumber
-    }
-    else if(firstNumber !== "" && secondNumber === "" && sum === "")
-    {
-        // handle event when user decides to do additional oeprations
-        firstNumber = sum
-        secondNumber = ""
-        firstNumber = firstNumber + display.textContent
     }
 }
 
@@ -185,7 +177,6 @@ number
 
 
     
-
 
 
 
