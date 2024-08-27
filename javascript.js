@@ -19,7 +19,12 @@ function multiply(num1,num2)
 
 function divide(num1,num2)
 {
-    if(num1/num2)
+    if(num1 !== "" && num2 === "0")
+    {
+        alert('divide by 0 is unavaliable')
+        return 0
+    }
+    else
     {
         return parseInt(num1/num2)
     }
@@ -38,17 +43,17 @@ let operator = ""
 
 function operate(num1,num2,op)
 {
-   if(op === '+')
-   {
-        return add(num1,num2)
-   }
-   else if(op === '-')
-   {
-        return subtract(num1,num2)
-   }
-   else if(op === '/')
+    if(op === '+')
     {
-         return divide(num1,num2)
+        return add(num1,num2)
+    }
+    else if(op === '-')
+    {
+        return subtract(num1,num2)
+    }
+    else if(op === '/')
+    {
+      return divide(num1,num2)
     }
     else if(op === 'x')
     {
@@ -149,10 +154,9 @@ function getOperatorButton(op)
 function getEqualButton(equalSign)
 {
     // display the '=' sign
+    display.textContent = equalSign.target.textContent
     if(firstNumber !== "" && secondNumber !== "" && operator !== "")
     {
-        display.textContent = equalSign.target.textContent
-    
         display.textContent = firstNumber + operator + secondNumber
         // display the result of the operator
         sum = operate(firstNumber,secondNumber,operator)
