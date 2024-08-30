@@ -4,17 +4,17 @@
 
 function add(num1,num2)
 {
-    return parseInt(num1) + parseInt(num2)
+    return parseFloat(num1) + parseFloat(num2)
 }
 
 function subtract(num1,num2)
 {
-    return parseInt(num1 - num2)
+    return parseFloat(num1) -parseFloat(num2)
 }
 
 function multiply(num1,num2)
 {
-    return parseInt(num1 * num2)
+    return parseFloat(num1) *  parseFload(num2)
 }
 
 function divide(num1,num2)
@@ -26,7 +26,7 @@ function divide(num1,num2)
     }
     else
     {
-        return parseInt(num1/num2)
+        return parseFloat(num1)/ parseFloat(num2)
     }
 }
 
@@ -35,6 +35,7 @@ function divide(num1,num2)
  */
 let firstNumber = ""
 let secondNumber = ""
+let decimal = ""
 let operator = ""
 
 /** 
@@ -67,7 +68,9 @@ function operate(num1,num2,op)
 
 const display = document.querySelector('.display')
 const buttons = document.querySelectorAll('button')
+const decimalButton = document.querySelector('.decimal')
 let sum = ""
+
 
 function getNumpad()
 {
@@ -82,49 +85,84 @@ function getNumpad()
                 getNumberButton(e)
             }
        
-            console.log('first number: ' + firstNumber)
-            console.log('second number: ' + secondNumber)
-
-            if(btn.className === 'operator')
+            else if(btn.className === 'operator')
             {
                 getOperatorButton(e)
+                console.log('operator: ' + operator)
             }
-
-            console.log('operator: ' + operator)
-
-            if(btn.className === 'equal')
+            else if(btn.className === 'equal')
             {
                 getEqualButton(e)
             }
-        })
-
-        btn.addEventListener('click',(e) =>
-        {
-            if(btn.className === 'clear')
+            else if(btn.className === 'decimal')
             {
-                display.textContent = e.target.textContent
-                display.textContent = "0"
-                firstNumber = "0"
-                secondNumber = ""
-                operator = ""
-                sum = ""
+                getDecimalButton(e)
+            }
+            else if(btn.className === 'delete')
+            {
+                getDeleteNumberButton(e)
+            }
+            else if(btn.className === 'clear')
+            {
+               getClearAllButton(e)
             }
         })
     })
 }
 
+function getClearAllButton(clearAll)
+{
+    display.textContent = clearAll.target.textContent
+    display.textContent = "0"
+    console.log('I clicked clear all')
+    firstNumber = ""
+    secondNumber = ""
+    operator = ""
+    console.log('firstNumber: ' + firstNumber + ' secondNumber: ' + secondNumber)
+}
+
+
+function getDecimalButton(dec)
+{
+    display.textContent = dec.target.textContent
+
+    if(operator === "")
+    {
+        firstNumber = firstNumber + display.textContent
+        console.log('firstNumber as a floating point: ' + firstNumber)
+        display.textContent = firstNumber
+    }
+    else if(operator !== "")
+    {
+        secondNumber = secondNumber + display.textContent
+        console.log('secondNumber as a floating point: ' + secondNumber)
+        display.textContent = firstNumber + operator + secondNumber 
+    }
+ 
+    // if firstBumber includes a '.' will disable the '.' button
+    if(firstNumber.includes('.') || secondNumber.includes('.'))
+    {
+        decimalButton.disabled = true
+    }
+    else 
+    {
+        decimalButton.disabled = false
+    }
+}
+
 function getNumberButton(number)
 {
-    display.textContent = number.target.textContent
-    if(secondNumber === "" && operator === "" )
-    {
-        // display the targeted click event
+    // display the targeted click event
+    display.textContent = number.target.textContent 
 
+    if(secondNumber === "" && operator === "")
+    {
         // update the display to show the current click event to handle multiple clicked events
         firstNumber = firstNumber + display.textContent
+        console.log('first number: ' + firstNumber)
 
         // update the display
-        display.textContent = firstNumber
+        display.textContent = firstNumber 
     }
     else if(firstNumber !== "" && operator !== "" )
     {
@@ -132,7 +170,17 @@ function getNumberButton(number)
 
         // update the display to include firstNumber and secondNumber
         display.textContent = firstNumber + operator + secondNumber
+        console.log('second number: ' + secondNumber)
     }
+    else if(firstNumber === "" && secondNumber === "" && operator !== "")
+    {
+        firstNumber = "0"
+        decimalButton.disabled = false
+        display.textContent = firstNumber  + operator
+        secondNumber = number.target.textContent
+        display.textContent = firstNumber + operator + secondNumber
+    }
+    // handles the case if user selects'.'
 }
 
 function getOperatorButton(op)
@@ -141,27 +189,30 @@ function getOperatorButton(op)
     operator = display.textContent
     display.textContent = firstNumber + operator  
 
+    decimalButton.disabled = false
+    console.log('decimal button is enabled again after clicking operator')
+
 }
 
 function getEqualButton(equalSign)
 {
-    // display the '=' sign
     display.textContent = equalSign.target.textContent
     if(firstNumber !== "" && secondNumber !== "" && operator !== "")
     {
         display.textContent = firstNumber + operator + secondNumber
-        // display the result of the operator
         sum = operate(firstNumber,secondNumber,operator)
         console.log('Sum: ' + sum)
-        
-        // store the sum as the firstNumber and display
+    
         display.textContent = sum
+        // store the sum as the firstNumber and display
         firstNumber = sum 
-        sum = ""
         secondNumber = ""
-        operator = ""
     }
 }
+
+/**
+ * Handle Decimal
+ */
 
 const number = getNumpad()
 number
