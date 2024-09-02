@@ -84,11 +84,9 @@ function getNumpad()
             {
                 getNumberButton(e)
             }
-       
             else if(btn.className === 'operator')
             {
                 getOperatorButton(e)
-                console.log('operator: ' + operator)
             }
             else if(btn.className === 'equal')
             {
@@ -125,6 +123,11 @@ function getClearAllButton(clearAll)
 function getDecimalButton(dec)
 {
     display.textContent = dec.target.textContent
+    if(firstNumber.includes('0') || secondNumber.includes('0'))
+    {
+        firstNumber = "0"
+        secondNumber = "0"
+    }
 
     if(operator === "")
     {
@@ -144,10 +147,6 @@ function getDecimalButton(dec)
     {
         decimalButton.disabled = true
     }
-    else 
-    {
-        decimalButton.disabled = false
-    }
 }
 
 function getNumberButton(number)
@@ -155,44 +154,48 @@ function getNumberButton(number)
     // display the targeted click event
     display.textContent = number.target.textContent 
 
-    if(secondNumber === "" && operator === "")
+    if(operator === "")
     {
         // update the display to show the current click event to handle multiple clicked events
         firstNumber = firstNumber + display.textContent
-        console.log('first number: ' + firstNumber)
 
         // update the display
         display.textContent = firstNumber 
     }
-    else if(firstNumber !== "" && operator !== "" )
+    else if(operator !== "")
     {
         secondNumber = secondNumber + display.textContent
 
         // update the display to include firstNumber and secondNumber
         display.textContent = firstNumber + operator + secondNumber
-        console.log('second number: ' + secondNumber)
     }
-    else if(firstNumber === "" && secondNumber === "" && operator !== "")
-    {
-        firstNumber = "0"
-        decimalButton.disabled = false
-        display.textContent = firstNumber  + operator
-        secondNumber = number.target.textContent
-        display.textContent = firstNumber + operator + secondNumber
-    }
-    // handles the case if user selects'.'
+    console.log('first number: ' + firstNumber)
+    console.log('second number: ' + secondNumber)
+
 }
 
 function getOperatorButton(op)
 {
     display.textContent = op.target.textContent
-    operator = display.textContent
-    display.textContent = firstNumber + operator  
-
-    decimalButton.disabled = false
-    console.log('decimal button is enabled again after clicking operator')
+    if(firstNumber !== "" && secondNumber === "")
+    {
+        operator = display.textContent
+        display.textContent = firstNumber + operator 
+        console.log('operator: ' + operator)
+        decimalButton.disabled = false
+        console.log('decimal button is enabled again after clicking operator')
+    }
+    else if(firstNumber === "" && secondNumber === "")
+    {
+        firstNumber = "0"
+        secondNumber = ""
+        operator = display.textContent
+        display.textContent = firstNumber + operator 
+        decimalButton.disabled = false
+    }
 
 }
+
 
 function getEqualButton(equalSign)
 {
@@ -210,9 +213,48 @@ function getEqualButton(equalSign)
     }
 }
 
-/**
- * Handle Decimal
- */
+function getDeleteNumberButton(del)
+{
+    del.target.className
+
+
+    if(firstNumber !== "" && operator === "" && secondNumber === "")
+    {
+        // handle case to delete firstNumber
+        console.log(firstNumber.length)
+        let len1 = firstNumber.length
+        // let deletedFirstNumber = ""
+        firstNumber = firstNumber.slice(0,len1 - 1)
+        
+        // firstNumber = deletedFirstNumber
+        console.log('deleted firstNumber: ' + firstNumber)
+        display.textContent = firstNumber
+
+        if(firstNumber === "")
+        {
+            return display.textContent = "0"
+        }
+    }
+    else if(firstNumber !== "" && operator !== "" && secondNumber !== "")
+    {
+        // handle case to delete secondNumber
+        let len2 = secondNumber.length
+        // let deletedSecondNumber = ""
+        secondNumber =  secondNumber.slice(0,len2 - 1)
+        console.log('deleted secondNumbers: ' + secondNumber)
+
+        // secondNumber = deletedSecondNumber
+        display.textContent = firstNumber + operator + secondNumber
+    }
+    else if(firstNumber !== "" && operator !== "" && secondNumber === "")
+    {
+        let deletedOperator = operator.slice(0,-1)
+        operator = deletedOperator
+        console.log('deleted operator')
+        display.textContent = firstNumber + operator
+    }
+    
+}
 
 const number = getNumpad()
 number
