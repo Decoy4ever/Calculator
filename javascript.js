@@ -66,10 +66,13 @@ function getNumpad()
         {
             if(btn.className === 'number')
             {
+                // display the initial targeted click event
+                display.textContent = e.target.textContent 
                 getNumberButton(e)
             }
             else if(btn.className === 'operator')
             {
+                display.textContent = e.target.textContent
                 getOperatorButton(e)
             }
             else if(btn.className === 'equal')
@@ -78,7 +81,7 @@ function getNumpad()
             }
             else if(btn.className === 'delete')
             {
-                getDeleteNumberButton(e)
+                getDeleteButton(e)
             }
             else if(btn.className === 'clear')
             {
@@ -91,9 +94,6 @@ function getNumpad()
 
 function getNumberButton(number)
 {
-    // display the initial targeted click event
-    display.textContent = number.target.textContent 
-
     if(secondNumber === "" && operator === "")
     {
         firstNumber = firstNumber + display.textContent
@@ -128,13 +128,12 @@ function getNumberButton(number)
     }
     console.log(`firstNumber: ${firstNumber}`)
     console.log(`secondNumber: ${secondNumber}`)
-
 }
 
 
 function getClearAllButton(clearAll)
 {
-    clearAll.target.textContent
+    // clearAll.target.textContent
     console.log('I clicked clear all')
     firstNumber = "0"
     secondNumber = ""
@@ -146,7 +145,7 @@ function getClearAllButton(clearAll)
 
 function getOperatorButton(op)
 {
-    display.textContent = op.target.textContent
+    // display.textContent = op.target.textContent
     if(firstNumber !== "" && secondNumber === "")
     {
         operator = display.textContent
@@ -168,14 +167,14 @@ function getOperatorButton(op)
 
 function getEqualButton(equalSign)
 {
-    display.textContent = equalSign.target.textContent
+    // display.textContent = equalSign.target.textContent
     if(firstNumber !== "" && secondNumber !== "" && operator !== "")
     {
         display.textContent = parseFloat(firstNumber) + operator + parseFloat(secondNumber)
         sum = operate(firstNumber,secondNumber,operator)
         console.log('Sum: ' + sum)
         display.textContent = parseFloat(sum)
-        decimalButton.disabled = false
+        decimalButton.disabled = true
 
         // store the sum as the firstNumber and display
         firstNumber = sum 
@@ -189,9 +188,9 @@ function getEqualButton(equalSign)
 }
 
 
-function getDeleteNumberButton(del)
+function getDeleteButton(del)
 {
-    del.target.className
+    // del.target.className
     if(firstNumber !== "" && operator === "" && secondNumber === "")
     {
         let len1 = firstNumber.length
@@ -220,7 +219,44 @@ function getDeleteNumberButton(del)
     }
 }
 
+/**
+ * Handle keyboard events
+ */
+function getKeyboardEvents()
+{
+    document.addEventListener('keydown',(e) =>
+    {
+        if(e.key === '0' || e.key === '.' || e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4' || e.key === '5' || e.key === '6' || e.key === '7' || e.key === '8' || e.key === '9' || e.key === '0')
+        {
+            display.textContent = parseFloat(e.key) 
+            getNumberButton(e)
+        }
+        else if((e.key === '+' || e.key === '-' || e.key === '/' || e.key === '*'))
+        {
+            display.textContent = e.key 
+            getOperatorButton(e)
+        }
+        else if(e.key === '=' || e.key === 'Enter')
+        {
+            // display.textContent = e.key
+            getEqualButton(e)
+        }
+        else if(e.key === 'Backspace')
+        {
+            // display.textContent = e.key
+            getDeleteButton(e)
+        }
+        else if(e.key === 'Delete')
+        {
+            display.textContent = e.key 
+            getClearAllButton(e)
+        }
+    })  
+}
+
+const keyboard = getKeyboardEvents()
 const number = getNumpad()
+keyboard
 number
 
 
@@ -234,7 +270,6 @@ number
 
 
     
-
 
 
 
