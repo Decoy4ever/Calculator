@@ -6,6 +6,7 @@ let firstNumber = ""
 let secondNumber = ""
 let operator = ""
 
+
 function add(num1,num2)
 {
     return parseFloat(num1) + parseFloat(num2)
@@ -61,50 +62,47 @@ function getNumpad()
     // loop through each button
     buttons.forEach((btn) => 
     {
-        // handle click number button event
         btn.addEventListener('click',(e) =>
         {
-            if(btn.className === 'number')
+            switch(btn.className)
             {
-                // display the initial targeted click event
-                display.textContent = e.target.textContent 
-                getNumberButton(e)
-            }
-            else if(btn.className === 'operator')
-            {
-                display.textContent = e.target.textContent
-                getOperatorButton(e)
-            }
-            else if(btn.className === 'equal')
-            {
-                getEqualButton(e)
-            }
-            else if(btn.className === 'delete')
-            {
-                getDeleteButton(e)
-            }
-            else if(btn.className === 'clear')
-            {
-               getClearAllButton(e)
+                case 'number':
+                    display.textContent = e.target.textContent 
+                    getNumberButton(e)
+                    break
+                case 'operator':
+                    display.textContent = e.target.textContent
+                    getOperatorButton(e)
+                    break
+                case 'equal':
+                    getEqualButton(e)
+                    break
+                case 'delete':
+                    getDeleteButton(e)
+                    break
+                case 'clear':
+                    getClearAllButton(e)
+                    break
             }
         })
     })
 }
 
 
-function getNumberButton(number)
+function getNumberButton()
 {
     if(secondNumber === "" && operator === "")
     {
         firstNumber = firstNumber + display.textContent
 
-        // if user selects '.' print NaN to overcome this do the following operation 
+        // if user selects '.' and prints NaN set the firstNumber as the following 
         if(isNaN(firstNumber))
         {
             firstNumber = "0" + firstNumber
         }
 
         display.textContent = parseFloat(firstNumber) 
+        console.log('firstNumber : ' + firstNumber)
     }
     else if(firstNumber !== "" && operator !== "")
     {
@@ -115,72 +113,67 @@ function getNumberButton(number)
             secondNumber = "0" + secondNumber
         }
         display.textContent = parseFloat(firstNumber) + operator + parseFloat(secondNumber)
+        console.log('secondNumber : ' + secondNumber)
     }
     
     // Handle the disabling of buttons
-    if(firstNumber.includes('.') && operator === "")
+    if(firstNumber.toString().includes('.') && operator === "")
     {
         decimalButton.disabled = true
     }
-    else if(secondNumber.includes('.') && operator !== "" )
+    else if(secondNumber.toString().includes('.') && operator !== "" )
     {
         decimalButton.disabled = true
     }
-    console.log(`firstNumber: ${firstNumber}`)
-    console.log(`secondNumber: ${secondNumber}`)
 }
 
 
-function getClearAllButton(clearAll)
+function getClearAllButton()
 {
-    // clearAll.target.textContent
-    console.log('I clicked clear all')
     firstNumber = "0"
     secondNumber = ""
     operator = ""
-    console.log('firstNumber: ' + firstNumber + ' secondNumber: ' + secondNumber)
     display.textContent = firstNumber
     decimalButton.disabled = false
 }
 
-function getOperatorButton(op)
+function getOperatorButton()
 {
-    // display.textContent = op.target.textContent
     if(firstNumber !== "" && secondNumber === "")
     {
         operator = display.textContent
         display.textContent = parseFloat(firstNumber) + operator 
-        console.log('operator: ' + operator)
         decimalButton.disabled = false
-        console.log('decimal button is enabled again after clicking operator')
+        console.log('operator: ' + operator)
     }
-    // handles case where firstNumber = secondNumber = 0
+    // handles case when user press operator button after sum been calculated
     else if(firstNumber === "" && secondNumber === "")
     {
-        firstNumber = "0"
-        secondNumber = "0"
+        firstNumber = sum
+        secondNumber = ""
         operator = display.textContent
         display.textContent = parseFloat(firstNumber) + operator 
+        console.log('operator now: ' + operator)
+        console.log('firstNumber is now: ' + firstNumber)
         decimalButton.disabled = false
     }
 }
 
-function getEqualButton(equalSign)
+function getEqualButton()
 {
-    // display.textContent = equalSign.target.textContent
     if(firstNumber !== "" && secondNumber !== "" && operator !== "")
     {
         display.textContent = parseFloat(firstNumber) + operator + parseFloat(secondNumber)
         sum = operate(firstNumber,secondNumber,operator)
-        console.log('Sum: ' + sum)
+        console.log('sum: ' + sum)
         display.textContent = parseFloat(sum)
-        decimalButton.disabled = true
-
-        // store the sum as the firstNumber and display
-        firstNumber = sum 
+        decimalButton.disabled = false
+        firstNumber = ""
         secondNumber = ""
         operator = ""
+  
     }
+    // handle case user presses '=' after firstNumber
     else if(firstNumber !== "" && secondNumber === "" && operator === "")
     {
         return display.textContent = firstNumber
@@ -188,34 +181,32 @@ function getEqualButton(equalSign)
 }
 
 
-function getDeleteButton(del)
+function getDeleteButton()
 {
-    // del.target.className
     if(firstNumber !== "" && operator === "" && secondNumber === "")
     {
         let len1 = firstNumber.length
-        console.log(firstNumber.length)
-        firstNumber = firstNumber.slice(0,len1 - 1)
-        console.log('firstNumber becomes: ' + firstNumber)
+        firstNumber = firstNumber.toString().slice(0,len1 - 1)
         display.textContent = parseFloat(firstNumber)
+        decimalButton.disabled = false
 
         if(firstNumber === "")
         {
-            return display.textContent = "0"
+            return display.textContent = '0'
         }
     }
     else if(firstNumber !== "" && operator !== "" && secondNumber !== "")
     {
         let len2 = secondNumber.length
-        secondNumber =  secondNumber.slice(0,len2 - 1)
-        console.log('secondNumber becomes: ' + secondNumber)
+        secondNumber =  secondNumber.toString().slice(0,len2 - 1)
         display.textContent = firstNumber + operator + secondNumber
+        decimalButton.disabled = false
     }
     else if(firstNumber !== "" && operator !== "" && secondNumber === "")
     {
         operator = operator.slice(0,-1)
-        console.log('deleted operator')
         display.textContent = parseFloat(firstNumber) + operator
+        decimalButton.disabled = false
     }
 }
 
@@ -226,30 +217,40 @@ function getKeyboardEvents()
 {
     document.addEventListener('keydown',(e) =>
     {
-        if(e.key === '0' || e.key === '.' || e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4' || e.key === '5' || e.key === '6' || e.key === '7' || e.key === '8' || e.key === '9' || e.key === '0')
+        switch(e.key)
         {
-            display.textContent = parseFloat(e.key) 
-            getNumberButton(e)
-        }
-        else if((e.key === '+' || e.key === '-' || e.key === '/' || e.key === '*'))
-        {
-            display.textContent = e.key 
-            getOperatorButton(e)
-        }
-        else if(e.key === '=' || e.key === 'Enter')
-        {
-            // display.textContent = e.key
-            getEqualButton(e)
-        }
-        else if(e.key === 'Backspace')
-        {
-            // display.textContent = e.key
-            getDeleteButton(e)
-        }
-        else if(e.key === 'Delete')
-        {
-            display.textContent = e.key 
-            getClearAllButton(e)
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '0':
+            case '.':
+                display.textContent = e.key 
+                getNumberButton(e)
+                break;
+            case '+':
+            case '-':
+            case '/':
+            case '*':
+                display.textContent = e.key 
+                getOperatorButton(e)
+                break
+            case '=':
+            case 'Enter':
+                getEqualButton(e)
+                break;
+            case 'Backspace':
+                getDeleteButton(e)
+                break;
+            case 'Delete':
+                getClearAllButton(e)
+                break;
         }
     })  
 }
