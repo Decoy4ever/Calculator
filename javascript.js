@@ -6,8 +6,6 @@ let firstNumber = ""
 let secondNumber = ""
 let operator = ""
 
-
-
 function add(num1,num2)
 {
     return parseFloat(num1) + parseFloat(num2)
@@ -36,7 +34,6 @@ function divide(num1,num2)
     }
 }
 
-
 function operate(num1,num2,op)
 {
     if(op === '+')
@@ -56,7 +53,6 @@ function operate(num1,num2,op)
         return multiply(num1,num2)
     }
 }
-
 
 function getNumpad()
 {
@@ -89,12 +85,11 @@ function getNumpad()
     })
 }
 
-
 function getNumberButton()
 {
     if(secondNumber === "" && operator === "")
     {
-        firstNumber = (firstNumber + display.textContent).substring(0,9)
+        firstNumber = (firstNumber + display.textContent).substring(0,12)
 
         // if user selects '.' and prints NaN set the firstNumber as the following 
         if(isNaN(firstNumber))
@@ -106,13 +101,13 @@ function getNumberButton()
     }
     else if(firstNumber !== "" && operator !== "")
     {
-        secondNumber = (secondNumber + display.textContent).substring(0,9)
+        secondNumber = (secondNumber + display.textContent).substring(0,12)
 
         if(isNaN(secondNumber))
         {
             secondNumber = "0" + secondNumber
         }
-        display.textContent = parseFloat(firstNumber) + operator + parseFloat(secondNumber)
+        display.textContent = parseFloat(firstNumber) + operator + '\r' + parseFloat(secondNumber)
         console.log('secondNumber : ' + secondNumber)
     }
 
@@ -126,7 +121,6 @@ function getNumberButton()
         decimalButton.disabled = false
     }
 }
-
 
 function getClearAllButton()
 {
@@ -151,7 +145,7 @@ function getOperatorButton()
     {
         firstNumber = sum
         operator = display.textContent
-        display.textContent = firstNumber + operator
+        display.textContent = firstNumber + operator 
         console.log('operator clicked after sum: ' + operator)
         decimalButton.disabled = false
     }
@@ -176,7 +170,6 @@ function getEqualButton()
         return display.textContent = firstNumber
     }
 }
-
 
 function getDeleteButton()
 {
