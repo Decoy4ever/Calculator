@@ -7,6 +7,7 @@ let secondNumber = ""
 let operator = ""
 
 
+
 function add(num1,num2)
 {
     return parseFloat(num1) + parseFloat(num2)
@@ -93,20 +94,19 @@ function getNumberButton()
 {
     if(secondNumber === "" && operator === "")
     {
-        firstNumber = firstNumber + display.textContent
+        firstNumber = (firstNumber + display.textContent).substring(0,9)
 
         // if user selects '.' and prints NaN set the firstNumber as the following 
         if(isNaN(firstNumber))
         {
             firstNumber = "0" + firstNumber
         }
-
-        display.textContent = parseFloat(firstNumber) 
+        display.textContent = parseFloat(firstNumber)
         console.log('firstNumber : ' + firstNumber)
     }
     else if(firstNumber !== "" && operator !== "")
     {
-        secondNumber = secondNumber + display.textContent
+        secondNumber = (secondNumber + display.textContent).substring(0,9)
 
         if(isNaN(secondNumber))
         {
@@ -115,15 +115,15 @@ function getNumberButton()
         display.textContent = parseFloat(firstNumber) + operator + parseFloat(secondNumber)
         console.log('secondNumber : ' + secondNumber)
     }
-    
+
     // Handle the disabling of buttons
-    if(firstNumber.toString().includes('.') && operator === "")
+    if(firstNumber.toString().includes('.') && secondNumber.toString().includes('.') && operator === "")
     {
         decimalButton.disabled = true
     }
-    else if(secondNumber.toString().includes('.') && operator !== "" )
+    else
     {
-        decimalButton.disabled = true
+        decimalButton.disabled = false
     }
 }
 
@@ -150,11 +150,9 @@ function getOperatorButton()
     else if(firstNumber === "" && secondNumber === "")
     {
         firstNumber = sum
-        secondNumber = ""
         operator = display.textContent
-        display.textContent = parseFloat(firstNumber) + operator 
-        console.log('operator now: ' + operator)
-        console.log('firstNumber is now: ' + firstNumber)
+        display.textContent = firstNumber + operator
+        console.log('operator clicked after sum: ' + operator)
         decimalButton.disabled = false
     }
 }
@@ -171,7 +169,6 @@ function getEqualButton()
         firstNumber = ""
         secondNumber = ""
         operator = ""
-  
     }
     // handle case user presses '=' after firstNumber
     else if(firstNumber !== "" && secondNumber === "" && operator === "")
