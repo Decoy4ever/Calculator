@@ -19,8 +19,10 @@ call the functions.
 
 3. Create a basic HTML calculator with the following buttons
 * The digits "1","2","3","4","5","6","7","8","9"
-* The operator "="
-* A clear operator "CE"
+* The equal "="
+* The '+'.'-','/' and '*' operator
+* A clearAll operator "A/C" that resets ti 0
+* A 'Delete' button to remove single numbers or oeprators
 * A display to showcase the operations. Initially have to show dummy numbers i.e. "0";
 
 Idea: Create a gird using flexbox and inside the flex-container will be flex-items that is buttons. The basic apperance
